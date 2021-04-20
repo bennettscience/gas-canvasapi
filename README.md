@@ -4,6 +4,9 @@ The Canvas API has a robust REST endpoint which can be used to extend many
 functions and features of the LMS. This library can be used to interact with the
 Canvas LMS REST API within Google Apps Script.
 
+**Note that this is actively being written and _probably_ shouldn't be used for
+important things yet.**
+
 ## Why?
 
 I use the [canvasapi](https://github.com/ucfopen/canvasapi) Python library, but
@@ -12,6 +15,9 @@ Script library will allow you to pull data right into Google Sheets without
 relying on another langauge.
 
 ## Getting Started
+
+Start by adding the library to your Apps Script project with the ID:
+**1A_9Cxj-tkYUsoxYAKQ-X_WAVhzzRyMgdWmJJfACqDHGEu6lmSKBsTcLR**
 
 The main methods of interaction are finished. After installing the library, You
 can set up your initial connection like so:
@@ -35,7 +41,7 @@ own request with `canvas._requester.request()` once you've instantiated:
 function myFunction() {
     const { Canvas } = canvasapi.modules();
 
-    let canvas = Canvas(Settings.prodUrl, Settings.prodKey);
+    let canvas = Canvas(yourUrl, yourKey);
 
     // get all modules in a course.
     let modules = canvas._requester

@@ -3,3 +3,5 @@
 .DS_Store
 creds.json
 .clasp*
+tests/*
+build/*

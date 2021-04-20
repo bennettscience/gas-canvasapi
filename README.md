@@ -16,8 +16,7 @@ relying on another langauge.
 
 ## Getting Started
 
-Start by adding the library to your Apps Script project with the ID:
-`1A_9Cxj-tkYUsoxYAKQ-X_WAVhzzRyMgdWmJJfACqDHGEu6lmSKBsTcLR`
+Library ID: `1A_9Cxj-tkYUsoxYAKQ-X_WAVhzzRyMgdWmJJfACqDHGEu6lmSKBsTcLR`
 
 The main methods of interaction are finished. After installing the library, You
 can set up your initial connection like so:

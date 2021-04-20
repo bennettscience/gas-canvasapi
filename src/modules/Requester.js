@@ -1,3 +1,14 @@
+/**
+ * @typedef {Object} CanvasResponse
+ * @property {String}   json        HTTP response content
+ * @property {Int}      status      HTTP status code
+ * @property {String}   headers     HTTP response headers
+ * 
+ * @typedef {Object} HTTPResponse
+ * @name HTTPResponse
+ * @description The base Google Apps Script HTTP response object. See https://developers.google.com/apps-script/reference/url-fetch/http-response
+ */
+
 // TODO: Check for optional args before making the request
 // TODO: Create payload for requests
 
@@ -8,7 +19,7 @@ export class Requester {
     this.UrlFetchApp_ = UrlFetchApp_;
   }
 
-  delete_request(url, headers, data=null, payload={}) {
+  delete_request_(url, headers, data=null, payload={}) {
     const opts = {
       "method": "DELETE",
       "contentType": "application/json",
@@ -16,6 +27,14 @@ export class Requester {
     }
   }
 
+  /**
+   * 
+   * @param {String} url        Endpoint for the request
+   * @param {Object} headers    Optional headers
+   * @param {String} query      URL-safe query string
+   * 
+   * @returns {HTTPResponse}
+   */
   get_request(url, headers, query) {
     let fullUrl = url + query;
     const opts = {
@@ -29,7 +48,7 @@ export class Requester {
     
   }
 
-  post_request(url, headers, data=null, payload={}) {
+  post_request_(url, headers, data=null, payload={}) {
     const opts = {
       "method": "POST",
       "contentType": "application/json",
@@ -39,7 +58,7 @@ export class Requester {
     if(payload) opts['payload'] = JSON.stringify(payload)
   }
 
-  put_request(url, headers, data=null, payload={}) {
+  put_request_(url, headers, data=null, payload={}) {
     const opts = {
       "method": "PUT",
       "contentType": "application/json",
@@ -53,6 +72,8 @@ export class Requester {
     * @param {string} endpoint  The Canvas endpoint
     * @param {Object} payload   Optional arguments to use with the request 
     * @param {Object} headers   Optional headers to include
+    * 
+    * @returns {CanvasResponse}
   */
   request(method, endpoint, url, payload=null, headers=null) {
     let query = "";

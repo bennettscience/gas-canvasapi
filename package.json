@@ -1,7 +1,7 @@
 {
-  "name": "appsscript-module-template",
+  "name": "gas-canvasapi",
   "version": "1.0.0",
-  "repository": "https://github.com/classroomtechtools/appsscript-module-template",
+  "repository": "https://github.com/bennettscience/gas-canvasapi",
   "type": "module",
   "license": {
     "type": "MIT",
@@ -35,6 +35,10 @@
   "main": "src/modules/index.js",
   "keywords": [
     "google",
-    "appsscripts"
-  ]
+    "appsscripts",
+    "canvaslms"
+  ],
+  "dependencies": {
+    "@classroomtechtools/virtualgs": "^1.7.2"
+  }
 }

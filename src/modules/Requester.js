@@ -1,0 +1,119 @@
+// TODO: Check for optional args before making the request
+// TODO: Create payload for requests
+
+export class Requester {
+  constructor(baseUrl, accessToken, {UrlFetchApp_=UrlFetchApp}={}) {
+    this._baseUrl = baseUrl + "/api/v1/";
+    this._accessToken = accessToken;
+    this.UrlFetchApp_ = UrlFetchApp_;
+  }
+
+  delete_request(url, headers, data=null, payload={}) {
+    const opts = {
+      "method": "DELETE",
+      "contentType": "application/json",
+      "headers": headers
+    }
+  }
+
+  get_request(url, headers, query) {
+    let fullUrl = url + query;
+    const opts = {
+      "method": "GET",
+      "contentType": "application/json",
+      "headers": headers,
+      "muteHttpExceptions": true,
+    }
+
+    return this.UrlFetchApp_.fetch(fullUrl, opts);
+    
+  }
+
+  post_request(url, headers, data=null, payload={}) {
+    const opts = {
+      "method": "POST",
+      "contentType": "application/json",
+      "headers": headers
+    }
+
+    if(payload) opts['payload'] = JSON.stringify(payload)
+  }
+
+  put_request(url, headers, data=null, payload={}) {
+    const opts = {
+      "method": "PUT",
+      "contentType": "application/json",
+      "headers": headers
+    }
+  }
+
+  /** 
+   * Make a request to the Canvas API and return the response
+    * @param {string} method    HTTP method
+    * @param {string} endpoint  The Canvas endpoint
+    * @param {Object} payload   Optional arguments to use with the request 
+    * @param {Object} headers   Optional headers to include
+  */
+  request(method, endpoint, url, payload=null, headers=null) {
+    let query = "";
+    let req_method, response;
+
+    // serialize an object of options into a querystring for the API call
+    if(payload) {
+      query = serialize_(payload)
+    }
+
+    method = method.toUpperCase();
+    const full_url =  url || `${this._baseUrl}${endpoint}`;
+    
+    if (!headers) {
+      headers = {
+        "Authorization": "Bearer " + this._accessToken
+      }
+    }    
+
+    if(method === "GET") {
+      req_method = this.get_request.bind(this);
+    } else if(method === "POST") {
+      req_method = this.post_request.bind(this);
+    } else if(method === "PUT") {
+      req_method = this.put_request.bind(this);
+    } else if(method === "DELETE") {
+      req_method = this.delete_request.bind(this);
+    }
+
+    response = req_method(full_url, headers, query)
+  
+    const status = response.getResponseCode()
+    // Handle response codes
+    switch(status) {
+      case 400:
+        throw new Error(`400: Bad Request`)
+      case 401:
+        if(response.getHeaders().hasOwnProperty('WWW-Authenticate')) {
+          throw new Error(`Invalid access token.`)
+        } else {
+          throw new Error(`Unauthorized`)
+        }
+      case 403:
+        throw new Error(`Forbidden`) // This could also be rate limiting. Need a better check.
+      case 404:
+        throw new Error(`Not found`)
+      case 409:
+        throw new Error(`Conflict: ${response.getContentText()}`)
+      case 422:
+        throw new Error(`Unprocessable request`)
+    }
+
+    if(status >= 500) {
+      throw new Error(`Encoutered an error: status code ${status}`)
+    }
+
+    return {
+      json: () => response.getContentText(),
+      status: () => status,
+      headers: () => response.getHeaders()
+    }
+  }
+
+}

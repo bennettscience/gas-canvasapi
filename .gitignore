@@ -3,5 +3,5 @@
 .DS_Store
 creds.json
 .clasp*
-tests/*
+tests/settings.js
 build/*

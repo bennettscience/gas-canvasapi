@@ -16,7 +16,7 @@ export class Requester {
   constructor(baseUrl, accessToken, {UrlFetchApp_=UrlFetchApp}={}) {
     this._baseUrl = baseUrl + "/api/v1/";
     this._accessToken = accessToken;
-    this.UrlFetchApp_ = UrlFetchApp_;
+    this.UrlFetchApp = UrlFetchApp_;
   }
 
   delete_request_(url, headers, data=null, payload={}) {
@@ -44,7 +44,7 @@ export class Requester {
       "muteHttpExceptions": true,
     }
 
-    return this.UrlFetchApp_.fetch(fullUrl, opts);
+    return this.UrlFetchApp.fetch(fullUrl, opts);
     
   }
 

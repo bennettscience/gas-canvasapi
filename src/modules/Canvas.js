@@ -19,7 +19,7 @@ export class Canvas {
     }
 
     if(baseUrl.includes(apiSuffix)) {
-      throw new Error(`Do not include '/api/v1 in your URL.`);
+      throw new Error(`Do not include api/v1 in your URL.`);
     }
 
     if(!baseUrl.includes(secureOnly)) {
@@ -32,7 +32,7 @@ export class Canvas {
 
     this._baseUrl = baseUrl;
     this._accessToken = accessToken;
-    this._requester = new Requester(baseUrl, accessToken)
+    this._requester = new Requester(baseUrl, accessToken, {UrlFetchApp_: Mock_})
   }
 
   /**

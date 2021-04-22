@@ -7,8 +7,8 @@ import {Submission} from './Submission.js';
  * @name Section
  */
 export class Section extends CanvasObject {
-  static classType = "Section"
-  
+  static classType() { return "Section" }
+
   constructor(requester, attributes) {
     super(requester, attributes)
   }

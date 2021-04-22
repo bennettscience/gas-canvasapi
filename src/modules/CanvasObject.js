@@ -5,8 +5,8 @@
  * @param {Object} attributes   Attributes returned by the Canvas API to build the object.
  */
 export class CanvasObject {
-  static classType = "CanvasObject"
-  
+  static classType() { return "CanvasObject" }
+
   constructor(requester, attributes) {
 
     // Carry the requester though to make subsequent API calls

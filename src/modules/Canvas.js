@@ -5,7 +5,7 @@ import {Requester} from './Requester.js'
 import {Section} from './Section.js'
 
 export class Canvas {
-  static classType = "Canvas"
+  static classType() { return "Canvas" }
   /**
    * 
    * @param {String} baseUrl Canvas URL

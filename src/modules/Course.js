@@ -3,7 +3,7 @@ import {CanvasObject} from './CanvasObject.js'
 import {PaginatedList} from './PaginatedList.js';
 
 export class Course extends CanvasObject {
-  static classType = "Course"
+  static classType() { return "Course" }
   
   constructor(requester, attributes) {
     super(requester, attributes)

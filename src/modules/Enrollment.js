@@ -1,8 +1,8 @@
 import {CanvasObject} from './CanvasObject.js'
 
 export class Enrollment extends CanvasObject {
-  static classType = "Enrollment"
-  
+  static classType() { return "Enrollment" }
+
   constructor(requester, attributes) {
     super(requester, attributes)
   }

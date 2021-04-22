@@ -15,8 +15,8 @@ import {NotImplementedError} from './Error.js';
 // TODO: Create payload for requests
 
 export class Requester {
-  static classType = "Requester";
-  
+  static classType() { return "Requester"; }
+
   constructor(baseUrl, accessToken, {UrlFetchApp_=UrlFetchApp}={}) {
     this._baseUrl = baseUrl + "/api/v1/";
     this._accessToken = accessToken;

@@ -1,7 +1,7 @@
 import {CanvasObject} from './CanvasObject.js'
 
 export class Assignment extends CanvasObject {
-  static classType = "Assignment"
+  static classType() { return "Assignment" }
   
   constructor(requester, attributes) {
     super(requester, attributes)

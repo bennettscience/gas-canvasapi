@@ -14,8 +14,8 @@
  * 
  */
 export class PaginatedList {
-  static classType = "PaginatedList";
-  
+  static classType() { return "PaginatedList"; }
+
   constructor(itemClass, requester, requestMethod, firstUrl, params) {
     this._elements = [],
     this._requester = requester;

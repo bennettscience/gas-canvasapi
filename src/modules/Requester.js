@@ -1,3 +1,5 @@
+import {NotImplementedError} from './Error.js';
+
 /**
  * @typedef {Object} CanvasResponse
  * @property {String}   json        HTTP response content
@@ -96,11 +98,14 @@ export class Requester {
     if(method === "GET") {
       req_method = this.get_request.bind(this);
     } else if(method === "POST") {
-      req_method = this.post_request.bind(this);
+      // req_method = this.post_request.bind(this);
+      throw new NotImplementedError('POST not implemented. Use a native UrlFetchApp.fetch() request.')
     } else if(method === "PUT") {
-      req_method = this.put_request.bind(this);
+      // req_method = this.put_request.bind(this);
+      throw new NotImplementedError('PUT not implemented. Use a native UrlFetchApp.fetch() request.')
     } else if(method === "DELETE") {
-      req_method = this.delete_request.bind(this);
+      // req_method = this.delete_request.bind(this);
+      throw new NotImplementedError('DELETE not implemented. Use a native UrlFetchApp.fetch() request.')
     }
 
     response = req_method(full_url, headers, query)

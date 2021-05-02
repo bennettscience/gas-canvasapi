@@ -62,7 +62,7 @@ as fit. Tests will be added in the near future.
 
 Testing relies on response stubs in `src/mocks/fixtures`. Each endpoint returns
 structured data and these fixtures are based on the
-[Canvas API documentation]().
+[Canvas API documentation](https://canvas.instructure.com/doc/api/).
 
 Dependency injection is used to bypass Google Apps Script's `UrlFetchApp` class
 by passing in a fixture. For each test which runs against a Canvas endpoint, a

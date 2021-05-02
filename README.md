@@ -58,6 +58,36 @@ function myFunction() {
 If you'd like to contribute, clone the project and add modules in `/src/modules`
 as fit. Tests will be added in the near future.
 
+### Writing tests
+
+Testing relies on response stubs in `src/mocks/fixtures`. Each endpoint returns
+structured data and these fixtures are based on the
+[Canvas API documentation]().
+
+Dependency injection is used to bypass Google Apps Script's `UrlFetchApp` class
+by passing in a fixture. For each test which runs against a Canvas endpoint, a
+fixture needs to be passed into `registerMock_` to build the `Mock` object.
+
+Each fixture is defined by the class you're testing and the endpoint method you
+need to test. The example below shows how to get an expected return from
+`https://canvas.instructure.com/api/v1/courses/:id`:
+
+```javascript
+import test from 'ava';
+import { registerMock_ } from '../src/mocks/mock.js';
+import { Canvas } from '../src/modules/Canvas.js';
+
+test('Get a single course', (t) => {
+    const mock = registerMock_('courses', 'get_by_id');
+
+    // instantiate Canvas with the mock
+    const canvas = new Canvas('https://example.com', 'abc123', { Mock_: mock });
+    const actual = canvas.getCourse(1);
+
+    // ... your assertions
+});
+```
+
 This project uses the
 [AppsScripts Modules Template](https://github.com/classroomtechtools/appsscriptsModules)
 by [Adam Morris](https://github.com/classroomtechtools), who has been

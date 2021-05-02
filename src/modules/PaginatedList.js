@@ -1,3 +1,5 @@
+import {parseLinkHeader_} from './Utils.js';
+
 /** 
  * Abstract the Canvas paginatied results
  * https://canvas.instructure.com/doc/api/file.pagination.html

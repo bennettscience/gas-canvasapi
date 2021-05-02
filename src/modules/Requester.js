@@ -1,4 +1,5 @@
 import {NotImplementedError} from './Error.js';
+import {serialize_} from './Utils.js';
 
 /**
  * @typedef {Object} CanvasResponse

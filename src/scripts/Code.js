@@ -4,12 +4,15 @@
  */
 
 // Import the class from Bundle.js
-const {Canvas} = Import
+const {Canvas, Requester} = Import
 
 // Export specific modules for use in the library.
 const CanvasApiModules = {
   Canvas: function(url, key) {
     return new Canvas(url, key)
+  },
+  Requester: function(url, key) {
+    return new Requester(url, key)
   }
 }
 

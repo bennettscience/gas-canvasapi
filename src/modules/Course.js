@@ -1,6 +1,9 @@
 import {Assignment} from './Assignment.js'
 import {CanvasObject} from './CanvasObject.js'
+import {Module} from './Module.js';
+import {NotImplementedError} from './Error.js'
 import {PaginatedList} from './PaginatedList.js';
+import {Section} from './Section.js'
 
 export class Course extends CanvasObject {
   static classType() { return "Course" }
@@ -28,7 +31,11 @@ export class Course extends CanvasObject {
    * @returns Section
    */
   getSection(id) {
+    throw new NotImplementedError('Building a custom Requester to use this endpoing.')
+  }
 
+  getModules(params={}) {
+    return new PaginatedList(Module, this._requester, `GET`, `courses/${this.id}/modules`)
   }
 
   /**

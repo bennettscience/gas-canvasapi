@@ -80,7 +80,7 @@ export function objOrStr_(obj, prop, types) {
         if(objType[prop] !== undefined)
         return objType[prop]
       } else {
-        throw new Error(`${objType.classType} does not have ${prop} attribute.`)
+        throw new Error(`${objType.classType()} does not have ${prop} attribute.`)
       }
     }
   }

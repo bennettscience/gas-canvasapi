@@ -4,6 +4,20 @@ export const fixtures_ = (function() {
     return this;
   }
 
+  const course = {
+    "create_assignment": {
+      "method": "POST",
+      "endpoint": "courses/1/assignments",
+      "data": {
+        "id": 1,
+        "course_id": 1,
+        "name": "Newly Created Assignment",
+        "description": "Do this assignment"
+      },
+      "status_code": 200
+	  },
+  }
+
   const courses = {
     "get_by_id": {
       "method": "GET",
@@ -56,6 +70,9 @@ export const fixtures_ = (function() {
           "name": "object 1"
         }
       ],
+      "headers": {
+        "Link": "<https://elkhart.instructure.com/api/v1/courses?page=1&per_page=100>; rel=\"current\""
+      },
       "status_code": 200
     },
     "2_1_page": {
@@ -71,6 +88,9 @@ export const fixtures_ = (function() {
           "name": "object 2"
         }
       ],
+      "headers": {
+        "Link": "<https://elkhart.instructure.com/api/v1/courses?page=1&per_page=100>; rel=\"current\""
+      },
       "status_code": 200
     }
   }
@@ -198,6 +218,7 @@ export const fixtures_ = (function() {
 
   return {
     init: init,
+    course: course,
     courses: courses,
     paginatedList: paginatedList,
     requests: requests,

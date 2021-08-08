@@ -1,8 +1,8 @@
 # GAS-CanvasApi
 
-The Canvas API has a robust REST endpoint which can be used to extend many
-functions and features of the LMS. This library can be used to interact with the
-Canvas LMS REST API within Google Apps Script.
+The Canvas API has a robust set of REST endpoints which can be used to automate
+many functions and features of the LMS. This library can be used to interact
+with the Canvas LMS REST API within Google Apps Script.
 
 **Note that this is actively being written and _probably_ shouldn't be used for
 important things yet.**
@@ -18,8 +18,8 @@ relying on another langauge.
 
 Library ID: `1A_9Cxj-tkYUsoxYAKQ-X_WAVhzzRyMgdWmJJfACqDHGEu6lmSKBsTcLR`
 
-The main methods of interaction are finished. After installing the library, You
-can set up your initial connection like so:
+After installing the library, You can set up your initial connection by creating
+a `Canvas` object:
 
 ```javascript
 function myFunction() {
@@ -31,7 +31,10 @@ function myFunction() {
 }
 ```
 
-## Defining endpoints
+Each Class has methods documented with JSDoc annotations to allow for
+autocompelte when using the GAS IDE online.
+
+## Calling Missing Endpoints
 
 There are a few of my commonly-hit endpoints available, but you can define your
 own request with `canvas._requester.request()` once you've instantiated:
@@ -40,7 +43,7 @@ own request with `canvas._requester.request()` once you've instantiated:
 function myFunction() {
     const { Canvas } = canvasapi.modules();
 
-    let canvas = Canvas(yourUrl, yourKey);
+    let canvas = new Canvas(yourUrl, yourKey);
 
     // get all modules in a course.
     let modules = canvas._requester
@@ -53,10 +56,61 @@ function myFunction() {
 }
 ```
 
+You can also skip creating the `Canvas` object directly and simply create a
+`Requester` instance to call API endpoints manually:
+
+```javascript
+function myFunction() {
+    const { Requester } = canvasapi.modules();
+
+    let requester = new Requester(yourUrl, yourKey);
+
+    // get all assignments in a course
+    let assignments = requester
+        .request('GET', 'courses/:courseId/assignments')
+        .json();
+
+    for (let assignment of JSON.parse(assignments)) {
+        console.log(assignment.name);
+    }
+}
+```
+
+## Pagination
+
+Canvas returns paginated results by default. The `PaginatedList` class returns
+an iterable which will automatically paginate results if there are more results.
+You can specify up to 100 results per page in your request querystring. Most
+methods default to 10.
+
+```javascript
+function myFunction() {
+    const { Canvas } = canvasapi.modules();
+    const canvas = new Canvas(yourUrl, yourKey);
+    const course = canvas.getCourse(courseId);
+
+    // getAssignments() returns a PaginatedList of results you can iterate
+    let assignments = course.getAssignments();
+
+    for (let item of assignments) {
+        console.log(item.name);
+    }
+
+    // Or you can destructure the array
+    console.log([...assignments]);
+
+    // Or cast to an arry directly
+    let myArray = new Array(assignments);
+}
+```
+
+Each item in the `PaginatedList` is a class, you can also call any available
+methods on the array items.
+
 ## Contributing
 
 If you'd like to contribute, clone the project and add modules in `/src/modules`
-as fit. Tests will be added in the near future.
+as fit.
 
 ### Writing tests
 
@@ -87,6 +141,10 @@ test('Get a single course', (t) => {
     // ... your assertions
 });
 ```
+
+Run the test suite with `npm run test`.
+
+---
 
 This project uses the
 [AppsScripts Modules Template](https://github.com/classroomtechtools/appsscriptsModules)

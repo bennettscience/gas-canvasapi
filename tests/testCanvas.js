@@ -1,6 +1,7 @@
 import test from 'ava';
 import {registerMock_} from '../src/mocks/mock.js'
 import {Canvas} from '../src/modules/Canvas.js';
+import {Course} from '../src/modules/Course.js'
 import {UrlFetchApp} from '../src/mocks/UrlFetchApp.js';
 
 
@@ -38,5 +39,6 @@ test("Get a single course", t => {
     const mock = registerMock_("courses", "get_by_id");
     const canvas = new Canvas("https://example.com", "abc123", {Mock_: mock})
     const course = canvas.getCourse(1)
-    t.assert(canvas instanceof Canvas)
+    t.assert(course instanceof Course)
+    t.is(course.name, "Test Course 1234")
 })

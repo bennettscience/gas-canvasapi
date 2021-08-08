@@ -1,7 +1,7 @@
 import test from 'ava';
 import {Requester} from '../src/modules/Requester.js';
 import {registerMock_} from '../src/mocks/mock.js'
-import { NotImplementedError } from '../src/modules/Error.js';
+import { IncompleteRequestError, NotImplementedError } from '../src/modules/Error.js';
 
 test.before(t => { global.UrlFetchApp = {} })
 
@@ -9,12 +9,13 @@ test('Requester.constructor', t => {
     const requester = new Requester('https://example.com', 'abc123');
     t.assert(requester instanceof Requester)
 })
-test('Requester POST', t => {
-    const requester = new Requester('https://example.com', 'abc123');
+test('Requester empty POST', t => {
+    const mock = registerMock_("requests", "post")
+    const requester = new Requester('https://example.com', 'abc123', {UrlFetchApp_: mock});
     const resp = t.throws(() => {
         requester.request("POST", "endpoint").json();
-    }, {instanceOf: NotImplementedError})
-    t.is(resp.message, "POST not implemented. Use a native UrlFetchApp.fetch() request.")
+    }, {instanceOf: IncompleteRequestError})
+    t.is(resp.message, "POST requests expect a JSON payload.")
 })
 test('Requester PUT', t => {
     const requester = new Requester('https://example.com', 'abc123');

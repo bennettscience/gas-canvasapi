@@ -1,7 +1,7 @@
 import {Assignment} from './Assignment.js'
 import {CanvasObject} from './CanvasObject.js'
 import {Module} from './Module.js';
-import {NotImplementedError} from './Error.js'
+import {MissingRequriedFieldError, NotImplementedError} from './Error.js'
 import {PaginatedList} from './PaginatedList.js';
 import {Section} from './Section.js'
 
@@ -12,10 +12,34 @@ export class Course extends CanvasObject {
     super(requester, attributes)
   }
 
-    /**
+  /**
+   * Create a new assignment
+   * 
+   * @param {Object} data: Assignment details
+   * @implements `POST /api/v1/courses/:course_id/assignments`
+   * 
+   * @returns Assignment
+   */
+  createAssignment(data) {
+    let response;
+    if('name' in data) {
+      response = this._requester.request(
+        "POST",
+        `courses/${this.id}/assignments`,
+        '',
+        data
+      );
+    } else {
+      throw new MissingRequriedFieldError("JSON object must include 'name' key.")
+    }
+
+    return new Assignment(this._requester, response.json())
+  }
+
+  /**
    * List all of the assignments in this course.
-   * @calls `GET /api/v1/courses/:course_id/assignments \
-   * <https://canvas.instructure.com/doc/api/assignments.html#method.assignments_api.index>`_
+   * @implements `GET /api/v1/courses/:course_id/assignments \
+   * <https://canvas.instructure.com/doc/api/assignments.html#method.assignments_api.index>`
    *
    * @returns PaginatedList of Assignment
    */
@@ -26,7 +50,7 @@ export class Course extends CanvasObject {
   /**
    * Return a single section from a course
    * 
-   * @calls `GET /api/v1/courses/:course_id/sections/:section_id
+   * @implements `GET /api/v1/courses/:course_id/sections/:section_id
    * @params {Int} id   The section ID to retrieve
    * @returns Section
    */
@@ -34,13 +58,19 @@ export class Course extends CanvasObject {
     throw new NotImplementedError('Building a custom Requester to use this endpoing.')
   }
 
-  getModules(params={}) {
+  /**
+   * 
+   * Get a list of modules in the course.
+   * @implements `GET /api/v1/courses/:course_id/modules \ <https://canvas.instructure.com/doc/api/modules.html`
+   * @returns PaginatdList[Module]
+   */
+  getModules() {
     return new PaginatedList(Module, this._requester, `GET`, `courses/${this.id}/modules`)
   }
 
   /**
    * List all sections in a course.
-   * @calls `GET /api/v1/courses/:course_id/secetions \ <https://canvas.instructure.com/doc/api/sections.html`
+   * @implements `GET /api/v1/courses/:course_id/secetions \ <https://canvas.instructure.com/doc/api/sections.html`
    * 
    * @returns PaginatedList of Section
    */

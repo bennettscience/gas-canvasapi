@@ -1,4 +1,4 @@
-import {NotImplementedError} from './Error.js';
+import {NotImplementedError, IncompleteRequestError} from './Error.js';
 import {serialize_} from './Utils.js';
 
 /**
@@ -53,14 +53,22 @@ export class Requester {
     
   }
 
-  post_request_(url, headers, data=null, payload={}) {
+  post_request(url, headers, data=null) {
     const opts = {
       "method": "POST",
       "contentType": "application/json",
-      "headers": headers
+      "headers": headers,
     }
 
-    if(payload) opts['payload'] = JSON.stringify(payload)
+    // Every POST request expects a payload. 
+    // Only stringify the payload if it exists. If it doesn't, throw an error.
+    if(data) {
+      opts['payload'] = JSON.stringify(data)
+    } else {
+      throw new IncompleteRequestError("POST requests expect a JSON payload.")
+    }
+
+    return this.UrlFetchApp.fetch(url, opts)
   }
 
   put_request_(url, headers, data=null, payload={}) {
@@ -101,8 +109,8 @@ export class Requester {
     if(method === "GET") {
       req_method = this.get_request.bind(this);
     } else if(method === "POST") {
-      // req_method = this.post_request.bind(this);
-      throw new NotImplementedError('POST not implemented. Use a native UrlFetchApp.fetch() request.')
+      req_method = this.post_request.bind(this);
+      // throw new NotImplementedError('POST not implemented. Use a native UrlFetchApp.fetch() request.')
     } else if(method === "PUT") {
       // req_method = this.put_request.bind(this);
       throw new NotImplementedError('PUT not implemented. Use a native UrlFetchApp.fetch() request.')
